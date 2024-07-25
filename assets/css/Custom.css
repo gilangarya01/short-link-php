@@ -1,0 +1,18 @@
+body {
+  background: linear-gradient(to bottom, #1a1930, #333257);
+}
+
+nav {
+  background-color: #0d1134;
+}
+
+.fa-link {
+  color: #b6bbc4;
+  font-size: 10em;
+  background: radial-gradient(circle at center, #1a1930, #080a1e);
+  border-radius: 30px;
+}
+
+footer {
+  background-color: #0d1134;
+}

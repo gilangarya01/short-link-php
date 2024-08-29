@@ -28,16 +28,17 @@ class UserController
 
     public function login()
     {
-        // Proses penambahan pengguna ke database
+        // Proses ambil pengguna ke database
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
+            $dataUser = $this->userModel->addLogin($username, $password);
 
-            if ($dataUser = $this->userModel->addLogin($username, $password)) {
+            if ($dataUser) {
                 $_SESSION['id-user'] = $dataUser['id'];
                 $this->redirect('/short');
-            } else {
-                $this->redirect('/user');
+            }else {
+                 $this->redirect('/user');
             }
         }
     }

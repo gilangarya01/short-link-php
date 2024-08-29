@@ -83,12 +83,10 @@ class ShortController
             $longUrl = $_POST['longUrl'];
 
             if ($this->shortModel->updateShort($idUrl, $longUrl) > 0) {
-                # code...
                 $this->redirect('/short');
             } else {
                 $this->redirect('/short/edit/' . $idUrl);
             }
-            // Redirect atau tampilkan pesan sukses
         }
     }
 

@@ -24,7 +24,6 @@ class UserModel
             // Cek password
             if (password_verify($password, $hashedPassword)) {
                 unset($row['password']);
-
                 return $row;
             }
         }
@@ -34,18 +33,19 @@ class UserModel
         return false;
     }
 
+
     public function addRegister($nama, $username, $password, $repeatPassword)
     {
         // Cek password length
         if (strlen($password) < 6) {
-            $_SESSION["error"] = "Password harus lebih dari 6 character";
-            return 0;
+            $_SESSION["error"] = "Password harus lebih dari 6 karakter";
+            return false;
         }
 
         // Cek repeat password
-        if ($password != $repeatPassword) {
+        if ($password !== $repeatPassword) {
             $_SESSION["error"] = "Password dan Repeat Password harus sama";
-            return 0;
+            return false;
         }
 
         // Check jika username telah tersedia
@@ -56,17 +56,24 @@ class UserModel
 
         if ($checkUsername->rowCount() > 0) {
             $_SESSION["error"] = "Username sudah tersedia di database";
-            return 0;
+            return false;
         }
 
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $query = "INSERT INTO users (nama, username, password) VALUES (:nama, :username, :password)";
         $stmt = $this->db->connect()->prepare($query);
         $stmt->bindParam(':nama', $nama);
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $password);
-        return $stmt->execute();
+        $stmt->bindParam(':password', $hashedPassword);
+
+        if ($stmt->execute()) {
+            $_SESSION["error"] = null; // Clear error
+            return true;
+        } else {
+            $_SESSION["error"] = "Registration failed";
+            return false;
+        }
     }
 
 }
